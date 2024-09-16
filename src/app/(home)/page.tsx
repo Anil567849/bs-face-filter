@@ -3,6 +3,8 @@ import { useState, useRef, useCallback, useEffect } from "react"
 import { Button } from "@/components/ui/button"
 import { Camera } from "lucide-react"
 import * as faceapi from 'face-api.js'
+import Heading from "./components/Heading"
+import Link from "next/link"
 
 export default function CameraButton() {
   const [isCameraOpen, setIsCameraOpen] = useState(false)
@@ -141,17 +143,31 @@ export default function CameraButton() {
     }
   }, [loadModels])
 
+  if(!isCameraOpen){
+    return (
+      <div className="flex flex-col items-center justify-center min-h-screen bg-[url('/bg.jpg')]">
+        <Heading />
+        <Button
+          onClick={openCamera}
+          className="px-6 py-3 text-lg font-semibold text-white bg-blue-600 rounded-full hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 transition-all duration-300 ease-in-out transform hover:scale-105 cursor-pointer"
+        >
+          <Camera className="w-6 h-6 mr-2" />
+          Open Camera
+        </Button>
+        <Link
+          href="/guess-age"
+          className="mt-5 flex px-6 py-3 text-lg font-semibold text-white bg-blue-600 rounded-full hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 transition-all duration-300 ease-in-out transform hover:scale-105 cursor-pointer"
+        >
+          <Camera className="w-6 h-6 mr-2" />
+          Guess Age
+        </Link>
+        
+      </div>
+    )
+  }
+
   return (
     <div className="flex flex-col items-center justify-center min-h-screen bg-gradient-to-r from-purple-400 via-pink-500 to-red-500">
-      <Button
-        onClick={openCamera}
-        className="px-6 py-3 text-lg font-semibold text-white bg-blue-600 rounded-full hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 transition-all duration-300 ease-in-out transform hover:scale-105 cursor-pointer"
-      >
-        <Camera className="w-6 h-6 mr-2" />
-        Open Camera
-      </Button>
-
-      {isCameraOpen && (
         <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-75 z-50">
           <div className="bg-white rounded-lg overflow-hidden shadow-xl w-[90vw] md:w-[50vw]">
 
@@ -185,7 +201,6 @@ export default function CameraButton() {
             
           </div>
         </div>
-      )}
     </div>
   )
 }
